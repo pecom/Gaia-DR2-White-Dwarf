@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 import corner
 import time
 import os
+import sys
 
 #USING CGS UNITS FOR STELLAR MASS, RADIUS, AND DISTANCES
 
@@ -23,6 +24,7 @@ universalG = 6.672e-8
 solarMassinGram = 1.989e33
 solarRadiusinCm = 6.96e10
 whiteDwarfs = []
+width = "Thick"
 
 def readFluxFrom(fileName):
     """ Reads flux from a given file name.
@@ -168,13 +170,12 @@ def startFits(wdStar):
     massOrder = massRadiusTable()[1]
     for a in range(5):
         temp, rd, chiVal, teffErr, rdErr = findTheFit(wdStar, logg, bergTable, teffR, loggR, wdStar.observedFluxes)
-        print("Temp is %f" % temp)
+        print("Temp is %f (K)" % temp)
         wdDistance = (1/wdStar.parallax)*pcInCm
         radius = rd*wdDistance
-        print("Radius is %r" % (radius*1.e-5))
+        print("Radius is %r (km)" % (radius*1.e-5))
         smolMass = getMassFromRT(radius, temp, mrBerg, massOrder)
-        print("Mass is %f" % (smolMass/solarMassinGram))
-        print("\n")
+        print("Mass is %f (M_sun)" % (smolMass/solarMassinGram))
         logg = np.log10(universalG*smolMass/(radius**2))
 
         wdStar.set_chi(chiVal)
@@ -195,14 +196,9 @@ def fluxGraph(wdStar):
     teff = wdStar.T_eff
     logg = wdStar.logg
 
-    print(teff)
-    print(logg)
-
     captureList = []
     for a in wdStar.labels:
         captureList.append(bergeronOrder.index(a))
-
-    print(captureList)
 
     f = open('bergeronFlux.csv', 'r')
     bergTable = []
@@ -221,7 +217,6 @@ def fluxGraph(wdStar):
     errorBar = wdStar.fluxErr
 
     xticks = [wavelengthDictionary[a] for a in wdStar.labels]
-    print(xticks)
 
     obi = "Teff: %f Log(g): %f \n" % (wdStar.T_eff, wdStar.logg)
     wan = "Radius: %f Mass: %f  \n" % (wdStar.radius/solarRadiusinCm, wdStar.mass/solarMassinGram)
@@ -239,11 +234,11 @@ def massRadiusTable():
     """ Grabs the necessary data for the getMassFromRT() function
     Requires the bergeron mass radius files to be under the BergeronFiles directory in either a Thin or Thick folder
     """
-    fileNames = [f for f in os.listdir("BergeronFiles/Thick")]
+    fileNames = [f for f in os.listdir("BergeronFiles/" + width)]
     mrBerg = []
     massOrder = []
     for name in fileNames:
-        f = open("BergeronFiles/Thick/" + name, 'r')
+        f = open("BergeronFiles/" + width + "/" + name, 'r')
         tempMeanwhile = []
         for l in f:
             tempMeanwhile.append(list(map(float, l.split())))
@@ -404,8 +399,9 @@ def calculateErrors(wdStar, rdVal, rdErr, tErr):
     wdStar.set_Lgerr(logErr)
     wdStar.set_Terr(tErr)
 
-    print("Here are the errors")
+    print("Here are the percent errors")
     print("Distance: %f | Radius: %f | Mass: %f | Log(g): %f | Temperature: %f" % (wdStar.disterr/wdStar.distance, wdStar.Rerr/wdStar.radius, wdStar.Merr/wdStar.mass, wdStar.Lgerr/wdStar.logg, wdStar.T_err/wdStar.T_eff))
+    print("\n")
 
 def mainSequence():
     """ Main start function.
@@ -424,7 +420,21 @@ def hayashiTrack():
     for a in whiteDwarfs:
         monteCarloTime(a)
 
-
+if (len(sys.argv) == 1):
+    print("Syntax is: python BergeronSolver.py main/monte [Thick/Thin]")
+elif (len(sys.argv) == 2):
+    if(sys.argv[1] == "main"):
+        mainSequence()
+    else:
+        hayashiTrack()
+elif (len(sys.argv) == 3):
+    width = sys.argv[2]
+    if(sys.argv[1] == "main"):
+        mainSequence()
+    else:
+        hayashiTrack()
+else:
+    print("Syntax is: python BergeronSolver.py main/monte [Thick/Thin]")
 
 
 #magnitudeToFlux([17.5], [.02], ["g"])
@@ -438,4 +448,4 @@ def hayashiTrack():
 
 #mainSequence()
 
-hayashiTrack()
+#hayashiTrack()
