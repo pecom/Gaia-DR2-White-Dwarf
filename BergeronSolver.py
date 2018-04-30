@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import numpy as np
 import scipy.stats as sp
 from scipy.optimize import least_squares
@@ -409,7 +411,6 @@ def mainSequence():
     """ Main start function.
     Grabs the white dwarfs from the file 'whiteDwarfList', calculates the fit and then creates the flux plot for each one
     """
-    print("how dhi")
     readFluxFrom("whiteDwarfList")
     for a in whiteDwarfs:
         startFits(a)
@@ -435,6 +436,6 @@ def hayashiTrack():
 # WD 0034-602, .04141, .00157, 1.38072971258e-14, 6.50717866045e-16, 8.87647446892e-15, 4.18335353531e-16, 4.79502041295e-15, 2.25982349937e-16, 2.33792237043e-15, 1.10182886774e-16, 5.54883040749e-16, 2.08238814836e-17, 1.73000050696e-16, 9.8294319744e-18, 6.54439144653e-17, 5.65603111961e-18, [B, V, R, I, J, H, K]
 
 
-mainSequence()
+#mainSequence()
 
-#hayashiTrack()
+hayashiTrack()
