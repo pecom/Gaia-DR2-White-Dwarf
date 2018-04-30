@@ -1,12 +1,18 @@
 # Gaia-DR2-White-Dwarf
 
-#BergeronSolver.py
-This script is supposed to solve for some of the basic properties of a white dwarf using Bergeron's models
-The files required are: bergeronFlux.csv (included) and Bergeron's Thick and Thin cooling models to be located under a BergeronFiles directory
-The modules required are: numpy, scipy, WhiteDwarf (included), matplotlib, lmfit, and corner
-The output is either the solved white dwarf with: distance, radius, mass, Log(g), and temperature
+## BergeronSolver.py
+This script is supposed to solve for some of the basic properties of a white dwarf using Bergeron's models. The output is either the solved white dwarf with: distance, radius, mass, Log(g), and temperature (mainSequence()) or a monte-carlo run of n=1000 with corner plots generated (hayashiTrack())
 
-#grabPhotometry.py
-This file requires the vizquery tool to be installed on the machine
-The modules requried are: astropy
-The output is a .vot file with the photometry
+### Requirements
+1. bergeronFlux.csv (included)
+2. Bergeron's Thick and Thin cooling models to be located under a BergeronFiles directory.
+3. numpy, scipy, WhiteDwarf (included), matplotlib, lmfit, and corner
+4. whiteDwarfList (example included)
+
+
+## grabPhotometry.py
+Simply grabs photometry from Vizier given an RA and DEC. The output is a .vot file with the photometry
+
+### Requirements
+1. The vizquery tool needs to be installed on the machine
+2. astropy
