@@ -6,8 +6,9 @@ This script is supposed to solve for some of the basic properties of a white dwa
 ### Requirements
 1. bergeronFlux.csv (included)
 2. Bergeron's Thick and Thin cooling models to be located under a BergeronFiles directory.
-3. numpy, scipy, WhiteDwarf (included), matplotlib, lmfit, and corner
-4. whiteDwarfList (example included)
+3. An images directory to hold the graphs (included)
+4. numpy, scipy, WhiteDwarf (included), matplotlib, lmfit, and corner
+5. whiteDwarfList (example included)
 
 
 ## grabPhotometry.py
@@ -16,3 +17,4 @@ Simply grabs photometry from Vizier given an RA and DEC. The output is a .vot fi
 ### Requirements
 1. The vizquery tool needs to be installed on the machine
 2. astropy
+3. A VizierData directory to hold the .vot files
